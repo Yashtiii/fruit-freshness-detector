@@ -75,7 +75,7 @@ model.compile(optimizer='adam',
 # Train 
 history = model.fit(
     train_generator,
-    epochs=10,   # pehle 10-15 epochs try karo
+    epochs=10,   # pehle 10-15 epochs 
     validation_data=valid_generator
 )
 
