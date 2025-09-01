@@ -33,7 +33,7 @@ Additionally, the system can **detect humans or other objects** using object det
 
 1. Clone the repository:
 
-   git clone https://github.com/yourusername/fruit-freshness-detector.git
+   git clone https://github.com/Vishal-Bytee/fruit-freshness-detector.git
    cd fruit-freshness-detector
 >python -m venv .venv
 >source .venv/bin/activate   # For Windows: .venv\Scripts\activate
