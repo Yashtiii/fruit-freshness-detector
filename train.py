@@ -5,44 +5,48 @@ from tensorflow.keras.layers import Dense, Dropout, GlobalAveragePooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 
-batch_size = 32
-image_size = 224
-validation_split = 0.2
+#  Dataset Directories 
+train_dir = r"C:\Users\sharm\Downloads\DATASET\Quality Dataset\train"
+valid_dir = r"C:\Users\sharm\Downloads\DATASET\Quality Dataset\valid"
+test_dir  = r"C:\Users\sharm\Downloads\DATASET\Quality Dataset\test"
 
-train_data = tf.keras.utils.image_dataset_from_directory(
-r"D:\Study stuff\Fruit insights project\Fresh-Insight\Fresh-Insight\Training",
-validation_split = validation_split,
-subset = "training",
-seed = 123,
-image_size = (image_size, image_size),
-batch_size = batch_size,
-label_mode = "categorical",
-shuffle = True,
+IMG_SIZE = 224   # MobileNetV2 ke liye 224x224
+BATCH_SIZE = 32
+
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    fill_mode='nearest'
 )
 
-validation_data = tf.keras.utils.image_dataset_from_directory(
-r"D:\Study stuff\Fruit insights project\Fresh-Insight\Fresh-Insight\Training",
-validation_split = validation_split,
-subset = "validation",
-seed = 123,
-image_size = (image_size, image_size),
-batch_size = batch_size,
-label_mode = "categorical",
-shuffle = True,
+valid_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen  = ImageDataGenerator(rescale=1./255)
+
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(IMG_SIZE, IMG_SIZE),
+    batch_size=BATCH_SIZE,
+    class_mode='categorical'
 )
 
-test_data = tf.keras.utils.image_dataset_from_directory(
-r"D:\Study stuff\Fruit insights project\Fresh-Insight\Fresh-Insight\Testing",
-image_size = (image_size, image_size),
-batch_size = batch_size,
-label_mode = "categorical",
-shuffle = False,
+valid_generator = valid_datagen.flow_from_directory(
+    valid_dir,
+    target_size=(IMG_SIZE, IMG_SIZE),
+    batch_size=BATCH_SIZE,
+    class_mode='categorical'
 )
 
-print("Class Names: ", train_data.class_names)
-class_names = train_data.class_names
-
-
+test_generator = test_datagen.flow_from_directory(
+    test_dir,
+    target_size=(IMG_SIZE, IMG_SIZE),
+    batch_size=BATCH_SIZE,
+    class_mode='categorical'
+)
 
 #  MobileNetV2 Base Model
 base_model = MobileNetV2(
